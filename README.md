@@ -9,9 +9,8 @@ See the upstream guide for more detail: https://aws.github.io/bedrock-agentcore-
 - [1-setup_gateway.py](1-setup_gateway.py) — script to create a Gateway and add a Lambda target. See function [`setup_gateway`](1-setup_gateway.py).
 - [2-run_agent.py](2-run_agent.py) — interactive agent tester. See function [`run_agent`](2-run_agent.py).
 - [lambda_function.py](lambda_function.py) — Lambda implementation exposing tools: [`lambda_handler`](lambda_function.py), [`get_weather`](lambda_function.py), [`get_time`](lambda_function.py).
-- [mcp-definition.json](mcp-definition.json) — MCP tool definitions (names: `get_weather`, `get_time`).
-- [gateway_config.json](gateway_config.json) — saved gateway configuration produced by the setup script.
-- [discovery-endpoint.json](discovery-endpoint.json) — OAuth discovery endpoint used by the Gateway.
+- [gateway_config.json](gateway_config.json) — (generated) saved gateway configuration produced by the setup script.
+- [discovery-endpoint.json](discovery-endpoint.json) — (generated) OAuth discovery endpoint used by the Gateway.
 
 ## Quick start
 
@@ -43,10 +42,11 @@ Create and activate a virtual environment (recommended):
     python 1-setup_gateway.py
     ```
 
-- This runs [`setup_gateway`](1-setup_gateway.py).
 - On success it writes [gateway_config.json](gateway_config.json).
 
-3. Run the interactive agent:
+3. ✳️ Look up in the accoutn the Lambda function created and replace with provided code over the boilerplate. 
+
+4. Enjoy it in the interactive agent chat:
 
     ```sh
     python 2-run_agent.py
@@ -55,8 +55,8 @@ Create and activate a virtual environment (recommended):
    - This runs [`run_agent`](2-run_agent.py).
    - The agent uses the Bedrock model (change `model_id` inside the script as needed) and lists available tools from the Gateway.
 
-4. Test tools
-   - Ask the agent about weather or time (the Lambda tools are defined in [lambda_function.py](lambda_function.py) and declared in [mcp-definition.json](mcp-definition.json)).
+5. Test tools
+   - Ask the agent about weather or time (the Lambda tools are defined in [lambda_function.py](lambda_function.py), also see the MCP definition bellow.
    - Lambda tools:
      - [`get_weather`](lambda_function.py): accepts `location`
      - [`get_time`](lambda_function.py): accepts `timezone`
@@ -65,11 +65,13 @@ Create and activate a virtual environment (recommended):
 
 - Change region in [1-setup_gateway.py](1-setup_gateway.py) before running if you are not in `eu-west-1`.
 - Update model in [2-run_agent.py](2-run_agent.py) by editing `model_id`.
-- Replace or extend the Lambda implementation in [lambda_function.py](lambda_function.py) to connect real services.
+- Replace or extend the Lambda implementation in [lambda_function.py](lambda_function.py) to connect to other services. (update via Lambda console)
 - The setup uses Cognito and generates client details to a file [gateway_config.json](gateway_config.json).
 - OAuth discovery details are generated and stored in [discovery-endpoint.json](discovery-endpoint.json).
 
 ## MCP definition for reference
+
+or [view/edit in the AWS console](https://console.aws.amazon.com/bedrock-agentcore/toolsAndGateways)
 
     ```json
     [
